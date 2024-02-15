@@ -28,7 +28,7 @@ const openai = new OpenAI({
 
 let currentMessageIndex = 0;
 
-const interval = 10 * 1000; // every day it loops in the json data and sends out a message from the json data
+const interval = 24 * 60 * 60 * 1000; // every day it loops in the json data and sends out a message from the json data
 setInterval(() => {
     const currentMessageObj = messageObject.messages[currentMessageIndex];
     if (currentMessageObj) {
