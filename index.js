@@ -4,6 +4,8 @@ const { default: OpenAI } = require('openai');
 
 const fs = require('fs');
 
+const keep_alive = require('./keep_alive.js');
+
 const jsonData = fs.readFileSync('data.json', 'utf-8');
 const messageObject = JSON.parse(jsonData);
 
@@ -26,7 +28,7 @@ const openai = new OpenAI({
 
 let currentMessageIndex = 0;
 
-const interval = 10 * 1000; // 24 hours
+const interval = 10 * 1000; // every day it loops in the json data and sends out a message from the json data
 setInterval(() => {
     const currentMessageObj = messageObject.messages[currentMessageIndex];
     if (currentMessageObj) {
