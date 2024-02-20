@@ -9,7 +9,6 @@ const keep_alive = require('./keep_alive.js');
 const jsonData = fs.readFileSync('data.json', 'utf-8');
 const messageObject = JSON.parse(jsonData);
 
-
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -54,12 +53,10 @@ client.on('messageCreate', async (message) => {
     if (message.channel.id !== process.env.CHANNEL_ID) return;
     if (message.content.startsWith('!')) return;
 
-    let conversationLog = [{ role: 'user', content: message.content }];
-
-    conversationLog.push({
-        role: 'user',
-        content: message.content,
-    });
+    let conversationLog = [
+        { role: 'system', content: 'You are speaking Dutch.' },
+        { role: 'user', content: message.content },
+    ];
 
     const chatCompletion = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
