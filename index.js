@@ -17,6 +17,8 @@ const client = new Client({
     ],
 });
 
+const messageHistory = [];
+
 client.on('ready', () => {
     console.log("The bot is online");
 });
@@ -48,22 +50,33 @@ setInterval(() => {
 }, interval);
 
 
+
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (message.channel.id !== process.env.CHANNEL_ID) return;
     if (message.content.startsWith('!')) return;
 
+    const userMessage = { role: 'user', content: message.content };
+    messageHistory.push(userMessage);
+
     let conversationLog = [
         { role: 'system', content: 'You are speaking Dutch.' },
+        { role: 'system', content: 'You response as fast as possible.' },
         { role: 'user', content: message.content },
     ];
+    try {
+        const chatCompletionPromise = openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: conversationLog,
+        });
 
-    const chatCompletion = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: conversationLog,
-    });
-
-    message.reply(chatCompletion.choices[0].message.content);
+        const [chatCompletion] = await Promise.all([chatCompletionPromise]);
+        
+        setTimeout(() => {
+            message.reply(chatCompletion.choices[0].message.content);
+        }, 300000);
+    } catch (error) {
+        console.error('Error processing chat completion:', error);
+    }
 });
-
 client.login(process.env.TOKEN);
