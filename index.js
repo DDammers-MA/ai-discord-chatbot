@@ -71,12 +71,13 @@ client.on('messageCreate', async (message) => {
         });
 
         const [chatCompletion] = await Promise.all([chatCompletionPromise]);
-        
+
         setTimeout(() => {
             message.reply(chatCompletion.choices[0].message.content);
-        }, 300000);
+        }, 3000);
     } catch (error) {
         console.error('Error processing chat completion:', error);
     }
 });
 client.login(process.env.TOKEN);
+
