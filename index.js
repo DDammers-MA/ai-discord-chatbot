@@ -29,27 +29,25 @@ const openai = new OpenAI({
 
 let currentMessageIndex = 0;
 
-const interval = 24 * 60 * 60 * 1000; // every day it loops in the json data and sends out a message from the json data
-setInterval(() => {
-    const currentMessageObj = messageObject.messages[currentMessageIndex];
-    if (currentMessageObj) {
-        const currentMessageKey = Object.keys(currentMessageObj)[0];
-        const currentMessage = currentMessageObj[currentMessageKey];
+// const interval = 24 * 60 * 60 * 1000; // every day it loops in the json data and sends out a message from the json data
+// setInterval(() => {
+//     const currentMessageObj = messageObject.messages[currentMessageIndex];
+//     if (currentMessageObj) {
+//         const currentMessageKey = Object.keys(currentMessageObj)[0];
+//         const currentMessage = currentMessageObj[currentMessageKey];
 
-        const channelId = process.env.CHANNEL_ID;
-        const channel = client.channels.cache.get(channelId);
+//         const channelId = process.env.CHANNEL_ID;
+//         const channel = client.channels.cache.get(channelId);
 
-        if (channel) {
-            channel.send(currentMessage);
-        }
+//         if (channel) {
+//             channel.send(currentMessage);
+//         }
         
-        currentMessageIndex = (currentMessageIndex + 1) % messageObject.messages.length;
-    } else {
-        console.error('Error: Messages array is empty or undefined.');
-    }
-}, interval);
-
-
+//         currentMessageIndex = (currentMessageIndex + 1) % messageObject.messages.length;
+//     } else {
+//         console.error('Error: Messages array is empty or undefined.');
+//     }
+// }, interval);
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
