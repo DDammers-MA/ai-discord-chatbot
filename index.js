@@ -72,7 +72,7 @@ client.on('messageCreate', async (message) => {
 
         setTimeout(() => {
             message.reply(chatCompletion.choices[0].message.content);
-        }, 3000);
+        }, 2000);
     } catch (error) {
         console.error('Error processing chat completion:', error);
     }
